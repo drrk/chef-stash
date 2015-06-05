@@ -18,6 +18,7 @@ action :create do
     end
     new_resource.updated_by_last_action(true)
   end
+
 end
 
 action :delete do
@@ -48,7 +49,35 @@ def load_current_resource
   install_chef_vault(@new_resource.chef_vault_source, @new_resource.chef_vault_version)
 
   @current_resource = Chef::Resource::StashRepo.new(repo_opts['repo'])
-  @current_resource.exists = exists?(server, user, repo_opts)
+  @current_resource.exists = exists?(server, user, repo_opts) 
+
+  # Load in existing permissions if the repo already exists
+  if @current_resource.exists
+    groups = stash_get_paged(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/groups")
+    groups.each do |group|
+      case group['permission']
+
+      when 'REPO_ADMIN'
+        @admin_groups.push(group['group']['name'])
+      when 'REPO_WRITE'
+        @write_groups.push(group['group']['name'])
+      when 'REPO_READ'
+        @read_groups.push(group['group']['name'])
+      end
+    end
+    users = stash_get_paged(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/users")
+    users.each do |user|
+      case user['permission']
+
+      when 'REPO_ADMIN'
+        @admin_userss.push(user['user']['name'])
+      when 'REPO_WRITE'
+        @user_groups.push(group['user']['name'])
+      when 'REPO_READ'
+        @user_groups.push(group['user']['name'])
+      end
+    end
+  end
 end
 
 private
@@ -82,3 +111,24 @@ def delete(server, user, repo_opts)
   uri = stash_uri(server, repo_uri(repo_opts))
   stash_delete(uri, user, ['202'])
 end
+
+def update_perms(server, user, repo, type, permission, current_list, new_list)
+  to_add = new_list - current_list
+  to_remove = current_list - new_list
+  
+  base_uri = "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/#{type}/"
+  to_add.each do |item|
+    uri = stash_uri(server, "#{base_uri}?#{permission}&#{item})")
+    stash_put(uri, user, nil, ['204'])
+  end
+
+  to_remove.each do |item|
+    uri = stash_uri(server, "#{base_uri}?#{item}")
+    stash_delete(uri, user, nil, ['204'])
+  end
+end
+
+
+
+
+

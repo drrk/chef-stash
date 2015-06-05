@@ -3,7 +3,9 @@ driver_plugin: vagrant
 
 driver_config:
   customize:
-    memory: 1024
+    memory: 6144
+  network:
+    - ["forwarded_port", {guest: 443, host: 8443}]
 
 platforms:
 - name: centos-6
