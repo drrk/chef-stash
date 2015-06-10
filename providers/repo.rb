@@ -17,7 +17,7 @@ action :create do
       create(server, user, repo_opts)
     end
   end
-  Chef::Log.debug("New Resoure admin groups: #{@new_resouce.admin_groups}")
+  Chef::Log.debug("New Resoure admin groups: #{@new_resource.admin_groups}")
   update_perms(server, user, repo_opts, "groups", "REPO_ADMIN", @current_resource.admin_groups, @new_resource.admin_groups)
   update_perms(server, user, repo_opts, "groups", "REPO_WRITE", @current_resource.write_groups, @new_resource.write_groups)
   update_perms(server, user, repo_opts, "groups", "REPO_READ", @current_resource.read_groups, @new_resource.read_groups)
