@@ -127,7 +127,7 @@ def update_perms(server, user, repo, type, permission, current_list, new_list)
   to_add = new_list - current_list
   to_remove = current_list - new_list
   
-  base_uri = "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/#{type}/"
+  base_uri = "projects/#{repo_opts['project']}/repos/#{repo}/permissions/#{type}/"
   to_add.each do |item|
     uri = stash_uri(server, "#{base_uri}?#{permission}&#{item})")
     stash_put(uri, user, nil, ['204'])
