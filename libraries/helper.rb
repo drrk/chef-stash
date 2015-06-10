@@ -66,7 +66,7 @@ module Stash
       result = Array.new
       while !last_page do 
         response = stash_get(uri,user,success_codes)
-        log response do
+        log "Stash API response: #{response}" do
           level :info
         end
         data = JSON.parse(response.body)
