@@ -129,7 +129,7 @@ def update_perms(server, user, repo_opts, type, permission, current_list, new_li
   
   base_uri = "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/#{type}"
   to_add.each do |item|
-    uri = stash_uri(server, "#{base_uri}?permission=#{permission}&name=#{item})")\
+    uri = stash_uri(server, "#{base_uri}?permission=#{permission}&name=#{item})")
     Chef::Log.debug "Stash Request: |#{uri.request_uri}|"
     stash_put(uri, user, nil, ['204'])
   end
