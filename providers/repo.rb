@@ -135,7 +135,7 @@ def update_perms(server, user, repo_opts, type, permission, current_list, new_li
   end
 
   to_remove.each do |item|
-    uri = stash_uri(server, "#{base_uri}?#{item}")
+    uri = stash_uri(server, "#{base_uri}?name=#{item}")
     stash_delete(uri, user, nil, ['204'])
   end
 end
