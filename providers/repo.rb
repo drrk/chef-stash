@@ -16,7 +16,6 @@ action :create do
     converge_by("Creating #{ @new_resource }") do
       create(server, user, repo_opts)
     end
-    new_resource.updated_by_last_action(true)
   end
   update_perms(server, user, repo_opts, "groups", "REPO_ADMIN", @current_resource.admin_groups, @new_resource.admin_groups)
   update_perms(server, user, repo_opts, "groups", "REPO_WRITE", @current_resource.write_groups, @new_resource.write_groups)
@@ -24,6 +23,10 @@ action :create do
   update_perms(server, user, repo_opts, "users", "REPO_ADMIN", @current_resource.admin_users, @new_resource.admin_users)
   update_perms(server, user, repo_opts, "users", "REPO_WRITE", @current_resource.write_users, @new_resource.write_users)
   update_perms(server, user, repo_opts, "users", "REPO_READ", @current_resource.read_users, @new_resource.read_users) 
+
+#TODO: fix this
+  new_resource.updated_by_last_action(true)
+
 end
 
 action :delete do
