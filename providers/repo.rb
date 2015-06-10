@@ -87,6 +87,7 @@ def load_current_resource
       end
     end
   end
+  @current_resource
 end
 
 private
