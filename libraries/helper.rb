@@ -66,7 +66,7 @@ module Stash
       result = Array.new
       while !last_page do 
         response = stash_get(uri,user,success_codes)
-        Chef::Log.info("Stash API response: #{response}")
+        Chef::Log.info("Stash API response: #{response.body}")
         data = JSON.parse(response.body)
         last_page = data['isLastPage']
         result += data['vaules']
