@@ -18,12 +18,12 @@ action :create do
     end
     new_resource.updated_by_last_action(true)
   end
-  update_perms(server, user, repo_opts, "group", "REPO_ADMIN", @current_resource.admin_groups, new_resource.admin_groups)
-  update_perms(server, user, repo_opts, "group", "REPO_WRITE", @current_resource.write_groups, new_resource.write_groups)
-  update_perms(server, user, repo_opts, "group", "REPO_READ", @current_resource.read_groups, new_resource.read_groups)
-  update_perms(server, user, repo_opts, "user", "REPO_ADMIN", @current_resource.admin_users, new_resource.admin_users)
-  update_perms(server, user, repo_opts, "user", "REPO_WRITE", @current_resource.write_users, new_resource.write_users)
-  update_perms(server, user, repo_opts, "user", "REPO_READ", @current_resource.read_users, new_resource.read_users) 
+  update_perms(server, user, repo_opts, "groups", "REPO_ADMIN", @current_resource.admin_groups, new_resource.admin_groups)
+  update_perms(server, user, repo_opts, "groups", "REPO_WRITE", @current_resource.write_groups, new_resource.write_groups)
+  update_perms(server, user, repo_opts, "groups", "REPO_READ", @current_resource.read_groups, new_resource.read_groups)
+  update_perms(server, user, repo_opts, "users", "REPO_ADMIN", @current_resource.admin_users, new_resource.admin_users)
+  update_perms(server, user, repo_opts, "users", "REPO_WRITE", @current_resource.write_users, new_resource.write_users)
+  update_perms(server, user, repo_opts, "users", "REPO_READ", @current_resource.read_users, new_resource.read_users) 
 end
 
 action :delete do
@@ -129,7 +129,7 @@ def update_perms(server, user, repo_opts, type, permission, current_list, new_li
   
   base_uri = "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/#{type}/"
   to_add.each do |item|
-    uri = stash_uri(server, "#{base_uri}?#{permission}&#{item})")
+    uri = stash_uri(server, "#{base_uri}?permission=#{permission}&name=#{item})")
     stash_put(uri, user, nil, ['204'])
   end
 
