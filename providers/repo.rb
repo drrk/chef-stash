@@ -126,6 +126,8 @@ end
 def update_perms(server, user, repo_opts, type, permission, current_list, new_list)
   to_add = new_list - current_list
   to_remove = current_list - new_list
+  Chef::Log.debug "Current List: #{current_list.to_s}"
+  Chef::Log.debug "New List: #{new_list.to_s}"
   Chef::Log.debug "Adding: #{to_add.to_s}"
   Chef::Log.debug "Removing: #{to_remove.to_s}"
   base_uri = "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/#{type}"
