@@ -53,7 +53,7 @@ def load_current_resource
 
   # Load in existing permissions if the repo already exists
   if @current_resource.exists
-    groups = stash_get_paged(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/groups")
+    groups = stash_get_paged(stash_uri(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/groups"))
     groups.each do |group|
       case group['permission']
 
@@ -65,7 +65,7 @@ def load_current_resource
         @read_groups.push(group['group']['name'])
       end
     end
-    users = stash_get_paged(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/users")
+    users = stash_get_paged(stash_uri(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/users"))
     users.each do |user|
       case user['permission']
 
