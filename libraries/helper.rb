@@ -69,7 +69,7 @@ module Stash
         Chef::Log.info("Stash API response: #{response.body}")
         data = JSON.parse(response.body)
         last_page = data['isLastPage']
-        result += data['vaules']
+        result += data['values']
       end
       result
     end
