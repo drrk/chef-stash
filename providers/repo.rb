@@ -66,6 +66,7 @@ def load_current_resource
   if @current_resource.exists
     groups = stash_get_paged(stash_uri(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/groups"),user)
     groups.each do |group|
+      Chef::Log.debug("Group name: #{group['group']['name']} permission: #{group['permission']}")
       case group['permission']
 
       when 'REPO_ADMIN'
