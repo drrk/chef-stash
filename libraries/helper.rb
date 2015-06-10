@@ -63,11 +63,15 @@ module Stash
 
     def stash_get_paged(uri, user, success_codes = ['200'])
       last_page = false
+      result = Array.new
       while !last_page do 
         response = stash_get(uri,user,success_codes)
+        log response
         data = JSON.parse(response.body)
         last_page = data['isLastPage']
+        result += data['vaules']
       end
+      result
     end
 
     def stash_delete(uri, user, success_codes = ['200'])

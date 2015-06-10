@@ -70,7 +70,7 @@ def load_current_resource
       case user['permission']
 
       when 'REPO_ADMIN'
-        @admin_userss.push(user['user']['name'])
+        @admin_users.push(user['user']['name'])
       when 'REPO_WRITE'
         @user_groups.push(group['user']['name'])
       when 'REPO_READ'
