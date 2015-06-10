@@ -18,7 +18,12 @@ action :create do
     end
     new_resource.updated_by_last_action(true)
   end
-
+  update_perms(server, user, repo, "group", "REPO_ADMIN", @current_resource.admin_groups, new_resource.admin_groups)
+  update_perms(server, user, repo, "group", "REPO_WRITE", @current_resource.write_groups, new_resource.write_groups)
+  update_perms(server, user, repo, "group", "REPO_READ", @current_resource.read_groups, new_resource.read_groups)
+  update_perms(server, user, repo, "user", "REPO_ADMIN", @current_resource.admin_users, new_resource.admin_users)
+  update_perms(server, user, repo, "user", "REPO_WRITE", @current_resource.write_users, new_resource.write_users)
+  update_perms(server, user, repo, "user", "REPO_READ", @current_resource.read_users, new_resource.read_users)
 end
 
 action :delete do
@@ -44,7 +49,13 @@ def load_current_resource
     'project' => @new_resource.project,
     'repo' => @new_resource.repo
   }
+  @admin_groups = Array.new
+  @write_groups = Array.new
+  @read_groups = Array.new
 
+  @admin_users = Array.new
+  @write_users = Array.new
+  @read_users = Array.new
   # Make sure chef-vault is installed
   install_chef_vault(@new_resource.chef_vault_source, @new_resource.chef_vault_version)
 
@@ -72,9 +83,9 @@ def load_current_resource
       when 'REPO_ADMIN'
         @admin_users.push(user['user']['name'])
       when 'REPO_WRITE'
-        @user_groups.push(group['user']['name'])
+        @user_users.push(group['user']['name'])
       when 'REPO_READ'
-        @user_groups.push(group['user']['name'])
+        @user_users.push(group['user']['name'])
       end
     end
   end
