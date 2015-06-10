@@ -123,7 +123,7 @@ def delete(server, user, repo_opts)
   stash_delete(uri, user, ['202'])
 end
 
-def update_perms(server, user, repo, type, permission, current_list, new_list)
+def update_perms(server, user, repo_opts, type, permission, current_list, new_list)
   to_add = new_list - current_list
   to_remove = current_list - new_list
   
