@@ -49,13 +49,7 @@ def load_current_resource
     'project' => @new_resource.project,
     'repo' => @new_resource.repo
   }
-  @admin_groups = Array.new
-  @write_groups = Array.new
-  @read_groups = Array.new
 
-  @admin_users = Array.new
-  @write_users = Array.new
-  @read_users = Array.new
   # Make sure chef-vault is installed
   install_chef_vault(@new_resource.chef_vault_source, @new_resource.chef_vault_version)
 
@@ -70,11 +64,11 @@ def load_current_resource
       case group['permission']
 
       when 'REPO_ADMIN'
-        @admin_groups.push(group['group']['name'])
+        @current_resource.admin_groups.push(group['group']['name'])
       when 'REPO_WRITE'
-        @write_groups.push(group['group']['name'])
+        @current_resource.write_groups.push(group['group']['name'])
       when 'REPO_READ'
-        @read_groups.push(group['group']['name'])
+        @current_resource.read_groups.push(group['group']['name'])
       end
     end
     users = stash_get_paged(stash_uri(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/users"), user)
@@ -82,11 +76,11 @@ def load_current_resource
       case user['permission']
 
       when 'REPO_ADMIN'
-        @admin_users.push(user['user']['name'])
+        @current_resource.admin_users.push(user['user']['name'])
       when 'REPO_WRITE'
-        @user_users.push(group['user']['name'])
+        @current_resource.user_users.push(group['user']['name'])
       when 'REPO_READ'
-        @user_users.push(group['user']['name'])
+        @current_resource.read_users.push(group['user']['name'])
       end
     end
   end
