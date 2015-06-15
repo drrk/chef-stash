@@ -68,12 +68,12 @@ def load_current_resource
 
   @current_resource = Chef::Resource::StashRepo.new(repo_opts['repo'])
 
-  #@current_resource.admin_groups = Array.new
-  #@current_resource.write_groups = Array.new
-  #@current_resource.read_groups = Array.new
-  #@current_resource.admin_users = Array.new
-  #@current_resource.write_users = Array.new
-  #@current_resource.read_users = Array.new
+  @current_resource.admin_groups = Array.new()
+  @current_resource.write_groups = Array.new()
+  @current_resource.read_groups = Array.new()
+  @current_resource.admin_users = Array.new()
+  @current_resource.write_users = Array.new()
+  @current_resource.read_users = Array.new()
 
   Chef::Log.debug("New Resource permissions (right after current_resource created:")
   Chef::Log.debug("Admin Groups: #{@new_resource.admin_groups}")
