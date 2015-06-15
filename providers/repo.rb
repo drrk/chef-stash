@@ -67,6 +67,14 @@ def load_current_resource
   install_chef_vault(@new_resource.chef_vault_source, @new_resource.chef_vault_version)
 
   @current_resource = Chef::Resource::StashRepo.new(repo_opts['repo'])
+
+  @current_resource.admin_groups = Array.new
+  @current_resource.write_groups = Array.new
+  @current_resource.read_groups = Array.new
+  @current_resource.admin_users = Array.new
+  @current_resource.write_users = Array.new
+  @current_resource.read_users = Array.new
+  
   Chef::Log.debug("New Resource permissions (right after current_resource created:")
   Chef::Log.debug("Admin Groups: #{@new_resource.admin_groups}")
   Chef::Log.debug("Write Groups: #{@new_resource.write_groups}")
@@ -83,12 +91,7 @@ def load_current_resource
   Chef::Log.debug("Read Users: #{@current_resource.read_users}")
 
   @current_resource.exists = exists?(server, user, repo_opts) 
-  @current_resource.admin_groups = Array.new
-  @current_resource.write_groups = Array.new
-  @current_resource.read_groups = Array.new
-  @current_resource.admin_users = Array.new
-  @current_resource.write_users = Array.new
-  @current_resource.read_users = Array.new
+
   # Load in existing permissions if the repo already exists
   if @current_resource.exists
     groups = stash_get_paged(stash_uri(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/groups"),user)
