@@ -48,7 +48,7 @@ end
 
 def load_current_resource
 
-  Chef::Log.debug("Loading current stash_repo resource: #{@new_resource.inspect}")
+  Chef::Log.debug("Loading current stash_repo resource: #{@new_resource.repo} New Resource Object ID: #{@new_resource.object_id}")
   Chef::Log.debug("New Resource permissions:")
   Chef::Log.debug("Admin Groups: #{@new_resource.admin_groups}")
   Chef::Log.debug("Write Groups: #{@new_resource.write_groups}")
@@ -67,7 +67,8 @@ def load_current_resource
   install_chef_vault(@new_resource.chef_vault_source, @new_resource.chef_vault_version)
 
   @current_resource = Chef::Resource::StashRepo.new(repo_opts['repo'])
-  Chef::Log.debug("current_resource: #{@current_resource.inspect}")
+  Chef::Log.debug("Current resource Object ID: #{@current_resource.object_id}")
+
   @current_resource.exists = exists?(server, user, repo_opts) 
 
   # Load in existing permissions if the repo already exists
