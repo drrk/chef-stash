@@ -75,6 +75,12 @@ def load_current_resource
   Chef::Log.debug("Write Users: #{@new_resource.write_users}")
   Chef::Log.debug("Read Users: #{@new_resource.read_users}")
   Chef::Log.debug("Current resource Object ID: #{@current_resource.object_id}")
+    Chef::Log.debug("Admin Groups: #{@current_resource.admin_groups}")
+  Chef::Log.debug("Write Groups: #{@current_resource.write_groups}")
+  Chef::Log.debug("Read Groups: #{@current_resource.read_groups}")
+  Chef::Log.debug("Admin Users: #{@current_resource.admin_users}")
+  Chef::Log.debug("Write Users: #{@current_resource.write_users}")
+  Chef::Log.debug("Read Users: #{@current_resource.read_users}")
 
   @current_resource.exists = exists?(server, user, repo_opts) 
 
