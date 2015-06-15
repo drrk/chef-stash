@@ -8,11 +8,11 @@ attribute :user, :kind_of => String
 attribute :chef_vault_version, :kind_of => String, :default => '1.2.0'
 attribute :chef_vault_source, :kind_of => String, :default => nil
 
-attribute :read_groups, :kind_of => Array
-attribute :write_groups, :kind_of => Array
-attribute :admin_groups, :kind_of => Array
-attribute :read_users, :kind_of => Array
-attribute :write_users, :kind_of => Array
-attribute :admin_users, :kind_of => Array
+attribute :read_groups, :kind_of => Array, :default => []
+attribute :write_groups, :kind_of => Array, :default => []
+attribute :admin_groups, :kind_of => Array, :default => []
+attribute :read_users, :kind_of => Array, :default => []
+attribute :write_users, :kind_of => Array, :default => []
+attribute :admin_users, :kind_of => Array, :default => []
 
 attr_accessor :exists
