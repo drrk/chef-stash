@@ -67,6 +67,13 @@ def load_current_resource
   install_chef_vault(@new_resource.chef_vault_source, @new_resource.chef_vault_version)
 
   @current_resource = Chef::Resource::StashRepo.new(repo_opts['repo'])
+  Chef::Log.debug("New Resource permissions (right after current_resource created:")
+  Chef::Log.debug("Admin Groups: #{@new_resource.admin_groups}")
+  Chef::Log.debug("Write Groups: #{@new_resource.write_groups}")
+  Chef::Log.debug("Read Groups: #{@new_resource.read_groups}")
+  Chef::Log.debug("Admin Users: #{@new_resource.admin_users}")
+  Chef::Log.debug("Write Users: #{@new_resource.write_users}")
+  Chef::Log.debug("Read Users: #{@new_resource.read_users}")
   Chef::Log.debug("Current resource Object ID: #{@current_resource.object_id}")
 
   @current_resource.exists = exists?(server, user, repo_opts) 
