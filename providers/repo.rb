@@ -47,6 +47,7 @@ action :delete do
 end
 
 def load_current_resource
+  @new_resource.freeze
   Chef::Log.debug("Loading current stash_repo resource: #{@new_resource.repo}")
   Chef::Log.debug("New Resource permissions:")
   Chef::Log.debug("Admin Groups: #{@new_resource.admin_groups}")
