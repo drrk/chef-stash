@@ -47,6 +47,14 @@ action :delete do
 end
 
 def load_current_resource
+  Chef::Log.debug("Loading current stash_repo resource: #{@new_resource.repo}")
+  Chef::Log.debug("New Resource permissions:")
+  Chef::Log.debug("Admin Groups: #{@new_resource.admin_groups}")
+  Chef::Log.debug("Write Groups: #{@new_resource.write_groups}")
+  Chef::Log.debug("Read Groups: #{@new_resource.read_groups}")
+  Chef::Log.debug("Admin Users: #{@new_resource.admin_userss}")
+  Chef::Log.debug("Write Users: #{@new_resource.write_users}")
+  Chef::Log.debug("Read Users: #{@new_resource.read_users}")
   server = @new_resource.server
   user = @new_resource.user
   repo_opts = {
@@ -125,6 +133,7 @@ end
 def update_perms(server, user, repo_opts, type, permission, current_list, new_list)
   to_add = new_list - current_list
   to_remove = current_list - new_list
+  Chef::Log.debug "Repo: #{repo_opts['repo']} Type: #{type} Permission: #{permission}"
   Chef::Log.debug "Current List: #{current_list.to_s}"
   Chef::Log.debug "New List: #{new_list.to_s}"
   Chef::Log.debug "Adding: #{to_add.to_s}"
