@@ -52,7 +52,7 @@ def load_current_resource
   Chef::Log.debug("Admin Groups: #{@new_resource.admin_groups}")
   Chef::Log.debug("Write Groups: #{@new_resource.write_groups}")
   Chef::Log.debug("Read Groups: #{@new_resource.read_groups}")
-  Chef::Log.debug("Admin Users: #{@new_resource.admin_userss}")
+  Chef::Log.debug("Admin Users: #{@new_resource.admin_users}")
   Chef::Log.debug("Write Users: #{@new_resource.write_users}")
   Chef::Log.debug("Read Users: #{@new_resource.read_users}")
   server = @new_resource.server
