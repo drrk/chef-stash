@@ -83,7 +83,12 @@ def load_current_resource
   Chef::Log.debug("Read Users: #{@current_resource.read_users}")
 
   @current_resource.exists = exists?(server, user, repo_opts) 
-
+  @current_resource.admin_groups = Array.new
+  @current_resource.write_groups = Array.new
+  @current_resource.read_groups = Array.new
+  @current_resource.admin_users = Array.new
+  @current_resource.write_users = Array.new
+  @current_resource.read_users = Array.new
   # Load in existing permissions if the repo already exists
   if @current_resource.exists
     groups = stash_get_paged(stash_uri(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/groups"),user)
