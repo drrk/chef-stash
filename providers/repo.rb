@@ -127,7 +127,7 @@ def update_perms(server, user, repo_opts, type, permission, current_list, new_li
   to_remove = current_list - new_list
   base_uri = "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/#{type}s"
   to_add.each do |item|
-    converge_by(" Adding #{permission} to #{type} #{item} on repo #{repo_opts['repo']} in project #{repo_opts['project']}") do
+    converge_by("add #{permission} to #{type} #{item} on repo #{repo_opts['repo']} in project #{repo_opts['project']}") do
       uri = stash_uri(server, "#{base_uri}?permission=#{permission}&name=#{item}")
       Chef::Log.debug "Stash Request: PUT |#{uri.request_uri}|"
       stash_put(uri, user, nil, ['204'])
@@ -135,7 +135,7 @@ def update_perms(server, user, repo_opts, type, permission, current_list, new_li
   end
 
   to_remove.each do |item|
-    converge_by("Removing #{permission} from #{type} #{item} on repo #{repo_opts['repo']} in project #{repo_opts['project']}") do
+    converge_by("remove #{permission} from #{type} #{item} on repo #{repo_opts['repo']} in project #{repo_opts['project']}") do
       uri = stash_uri(server, "#{base_uri}?name=#{item}")
       Chef::Log.debug "Stash Request: DELETE |#{uri.request_uri}|"
       stash_delete(uri, user, ['204'])
