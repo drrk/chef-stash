@@ -173,7 +173,7 @@ def update_perms(server, user, repo_opts, type, permission, current_list, new_li
   to_remove.each do |item|
     uri = stash_uri(server, "#{base_uri}?name=#{item}")
     Chef::Log.debug "Stash Request: DELETE |#{uri.request_uri}|"
-    stash_delete(uri, user, nil, ['204'])
+    stash_delete(uri, user, ['204'])
   end
 end
 
