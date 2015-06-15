@@ -5,28 +5,28 @@ def whyrun_supported?
 end
 
 action :create do
-  server = new_resource.server
-  user = new_resource.user
+  server = @new_resource.server
+  user = @new_resource.user
   repo_opts = {
-    'project' => new_resource.project,
-    'repo' => new_resource.repo
+    'project' => @new_resource.project,
+    'repo' => @new_resource.repo
   }
 
-  unless current_resource.exists
-    converge_by("Creating #{ new_resource }") do
+  unless @current_resource.exists
+    converge_by("Creating #{ @new_resource }") do
       create(server, user, repo_opts)
     end
   end
-  Chef::Log.debug("New Resource : #{new_resource}")
-  update_perms(server, user, repo_opts, "groups", "REPO_ADMIN", current_resource.admin_groups, new_resource.admin_groups)
-  update_perms(server, user, repo_opts, "groups", "REPO_WRITE", current_resource.write_groups, new_resource.write_groups)
-  update_perms(server, user, repo_opts, "groups", "REPO_READ", current_resource.read_groups, new_resource.read_groups)
-  update_perms(server, user, repo_opts, "users", "REPO_ADMIN", current_resource.admin_users, new_resource.admin_users)
-  update_perms(server, user, repo_opts, "users", "REPO_WRITE", current_resource.write_users, new_resource.write_users)
-  update_perms(server, user, repo_opts, "users", "REPO_READ", current_resource.read_users, new_resource.read_users) 
+  Chef::Log.debug("New Resource : #{@new_resource}")
+  update_perms(server, user, repo_opts, "groups", "REPO_ADMIN", @current_resource.admin_groups, @new_resource.admin_groups)
+  update_perms(server, user, repo_opts, "groups", "REPO_WRITE", @current_resource.write_groups, @new_resource.write_groups)
+  update_perms(server, user, repo_opts, "groups", "REPO_READ", @current_resource.read_groups, @new_resource.read_groups)
+  update_perms(server, user, repo_opts, "users", "REPO_ADMIN", @current_resource.admin_users, @new_resource.admin_users)
+  update_perms(server, user, repo_opts, "users", "REPO_WRITE", @current_resource.write_users, @new_resource.write_users)
+  update_perms(server, user, repo_opts, "users", "REPO_READ", @current_resource.read_users, @new_resource.read_users) 
 
 #TODO: fix this
-  new_resource.updated_by_last_action(true)
+  @new_resource.updated_by_last_action(true)
 
 end
 
@@ -42,37 +42,37 @@ action :delete do
     converge_by("Deleting #{ @new_resource }") do
       delete(server, user, repo_opts)
     end
-    new_resource.updated_by_last_action(true)
+    @new_resource.updated_by_last_action(true)
   end
 end
 
 def load_current_resource
-  server = new_resource.server
-  user = new_resource.user
+  server = @new_resource.server
+  user = @new_resource.user
   repo_opts = {
-    'project' => new_resource.project,
-    'repo' => new_resource.repo
+    'project' => @new_resource.project,
+    'repo' => @new_resource.repo
   }
 
   # Make sure chef-vault is installed
-  install_chef_vault(new_resource.chef_vault_source, new_resource.chef_vault_version)
+  install_chef_vault(@new_resource.chef_vault_source, @new_resource.chef_vault_version)
 
-  current_resource = Chef::Resource::StashRepo.new(repo_opts['repo'])
-  current_resource.exists = exists?(server, user, repo_opts) 
+  @current_resource = Chef::Resource::StashRepo.new(repo_opts['repo'])
+  @current_resource.exists = exists?(server, user, repo_opts) 
 
   # Load in existing permissions if the repo already exists
-  if current_resource.exists
+  if @current_resource.exists
     groups = stash_get_paged(stash_uri(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/groups"),user)
     groups.each do |group|
       Chef::Log.debug("Group name: #{group['group']['name']} permission: #{group['permission']}")
       case group['permission']
 
       when 'REPO_ADMIN'
-        current_resource.admin_groups.push(group['group']['name'])
+        @current_resource.admin_groups.push(group['group']['name'])
       when 'REPO_WRITE'
-        current_resource.write_groups.push(group['group']['name'])
+        @current_resource.write_groups.push(group['group']['name'])
       when 'REPO_READ'
-        current_resource.read_groups.push(group['group']['name'])
+        @current_resource.read_groups.push(group['group']['name'])
       end
     end
     users = stash_get_paged(stash_uri(server, "projects/#{repo_opts['project']}/repos/#{repo_opts['repo']}/permissions/users"), user)
@@ -80,15 +80,14 @@ def load_current_resource
       case user['permission']
 
       when 'REPO_ADMIN'
-        current_resource.admin_users.push(user['user']['name'])
+        @current_resource.admin_users.push(user['user']['name'])
       when 'REPO_WRITE'
-        current_resource.user_users.push(group['user']['name'])
+        @current_resource.user_users.push(group['user']['name'])
       when 'REPO_READ'
-        current_resource.read_users.push(group['user']['name'])
+        @current_resource.read_users.push(group['user']['name'])
       end
     end
   end
-  current_resource
 end
 
 private
